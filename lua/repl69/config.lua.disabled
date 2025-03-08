@@ -1,0 +1,80 @@
+---@alias Variant "main"
+---@alias Palette table<string, string>
+---@alias PaletteColor string
+---@alias Highlight { link: string, inherit: boolean } | { fg: string, bg: string, sp: string, bold: boolean, italic: boolean, undercurl: boolean, underline: boolean, underdouble: boolean, underdotted: boolean, underdashed: boolean, strikethrough: boolean, inherit: boolean }
+
+local M = {}
+
+---@class Options
+M.options = {
+  ---Set the desired variant: "auto" will follow the vim background,
+  ---@type "auto" | Variant
+  variant = "auto",
+
+  ---Set the desired dark variant when `options.variant` is set to "auto".
+  ---@type Variant
+  dark_variant = "main",
+
+  terminal_colors = true,
+
+  styles = {
+    bold = true,
+    italic = true,
+    transparency = false,
+  },
+
+  ---@type table<string, table<string, string>>
+  palette = {},
+
+  ---@type table<string, string | PaletteColor>
+  groups = {
+    base = "black",
+    link = "gray300",
+    border = "gray900",
+    panel = "gray950",
+
+    error = "red700",
+    hint = "green700",
+    info = "cyan700",
+    ok = "green700",
+    warn = "orange700",
+    note = "blue700",
+    todo = "cyan700",
+
+    git_add = "green700",
+    git_change = "yellow700",
+    git_delete = "red700",
+    git_dirty = "gray300",
+    git_ignore = "gray600",
+    git_merge = "gray200",
+    git_rename = "gray500",
+    git_stage = "gray300",
+    git_text = "gray100",
+    git_untracked = "orange700",
+
+    ---@type string | PaletteColor
+    h1 = "gray400",
+    h2 = "gray450",
+    h3 = "gray500",
+    h4 = "gray550",
+    h5 = "gray600",
+    h6 = "gray650",
+  },
+
+  ---@type table<string, Highlight>
+  highlight_groups = {},
+
+  ---Called before each highlight group, before setting the highlight.
+  ---@param group string
+  ---@param highlight Highlight
+  ---@param palette Palette
+  ---@diagnostic disable-next-line: unused-local
+  before_highlight = function(group, highlight, palette) end,
+}
+
+---@param options Options | nil
+function M.extend_options(options)
+  M.options = vim.tbl_deep_extend("force", M.options, options or {})
+end
+
+return M

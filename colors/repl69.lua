@@ -1,2 +1,1 @@
-package.loaded["repl69.palette"] = nil
-require("repl69").colorscheme()
+require("repl69").load({})
